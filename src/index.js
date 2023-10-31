@@ -15,9 +15,9 @@ app.use(express.static(path.join(__dirname, "public")));
 
 //Parse body request
 app.use(
-  express.urlencoded({
-    extended: true,
-  })
+    express.urlencoded({
+        extended: true,
+    })
 );
 
 //Parse Frameworks JS(fetch, axios,...)
