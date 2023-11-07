@@ -1,0 +1,31 @@
+<div class='mt-4'>
+    <h3>Sản phẩm của tôi</h3>
+    <table class='table'>
+        <thead>
+            <tr>
+                <th scope='col'>#</th>
+                <th scope='col'>Tên sản phẩm</th>
+                <th scope='col'>Rating</th>
+                <th scope='col'>Thời gian tạo</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each products}}
+                <tr>
+                    <th scope='row'>{{sum @index 1}}</th>
+                    <td>{{this.name}}</td>
+                    <td>{{this.rating}}</td>
+                    <td>{{this.createdAt}}</td>
+                    <td>
+                        <a
+                            class='btn btn-link'
+                            href='/products/{{this._id}}/edit'
+                        >Sửa</a>
+                        <a class='btn btn-link' href=''>Xoá</a>
+                    </td>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>

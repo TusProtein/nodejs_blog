@@ -31,7 +31,15 @@ app.use(express.json());
 // app.use(morgan("combined"));
 
 //Template engines
-app.engine('hbs', handlebars({ extname: '.hbs' }));
+app.engine(
+    'hbs',
+    handlebars({
+        extname: '.hbs',
+        helpers: {
+            sum: (a, b) => a + b,
+        },
+    })
+);
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, 'resources', 'views'));
 

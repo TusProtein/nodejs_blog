@@ -26,6 +26,21 @@ class ProductController {
             .then(() => res.redirect('/'))
             .catch((err) => {});
     }
+
+    edit(req, res, next) {
+        Product.findById({ _id: req.params.id })
+            .lean()
+            .then((productId) => res.render('./products/edit', { productId }))
+            .catch(next);
+    }
+
+    update(req, res, next) {
+        Product.updateOne({ _id: req.params.id }, req.body)
+            // lean() ==> Mongoose Documents -> Object JavaScript
+            .lean()
+            .then(() => res.redirect('/me/stored-products'))
+            .catch(next);
+    }
 }
 
 export default new ProductController();
