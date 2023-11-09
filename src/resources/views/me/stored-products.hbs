@@ -5,9 +5,8 @@
             <tr>
                 <th scope='col'>#</th>
                 <th scope='col'>Tên sản phẩm</th>
+                <th scope='col'>Mô tả</th>
                 <th scope='col'>Rating</th>
-                <th scope='col'>Thời gian tạo</th>
-                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -15,17 +14,94 @@
                 <tr>
                     <th scope='row'>{{sum @index 1}}</th>
                     <td>{{this.name}}</td>
-                    <td>{{this.rating}}</td>
-                    <td>{{this.createdAt}}</td>
-                    <td>
+                    <td>{{this.description}}</td>
+                    <td>@{{this.rating}}</td>
+                    <td style='display: flex; gap: 16px'>
                         <a
-                            class='btn btn-link'
+                            type='button'
+                            class='btn btn-outline-primary'
                             href='/products/{{this._id}}/edit'
                         >Sửa</a>
-                        <a class='btn btn-link' href=''>Xoá</a>
+                        <button
+                            id='modal-delete-product'
+                            data-id='{{this._id}}'
+                            data-bs-toggle='modal'
+                            data-bs-target='#exampleModal'
+                            type='button'
+                            class='btn btn-outline-danger'
+                        >Xoá</button>
                     </td>
                 </tr>
             {{/each}}
         </tbody>
     </table>
 </div>
+
+<!-- Modal -->
+<div
+    class='modal fade'
+    id='exampleModal'
+    tabindex='-1'
+    aria-labelledby='exampleModalLabel'
+    aria-hidden='true'
+>
+    <div class='modal-dialog'>
+        <div class='modal-content'>
+            <div class='modal-header'>
+                <h1 class='modal-title fs-5' id='exampleModalLabel'>Xoá sản phẩm</h1>
+                <button
+                    type='button'
+                    class='btn-close'
+                    data-bs-dismiss='modal'
+                    aria-label='Close'
+                ></button>
+            </div>
+            <div class='modal-body'>
+                Bạn có chắc chắn muốn xoá sản phẩm này?
+            </div>
+            <div class='modal-footer'>
+                <button
+                    id="btn-delete-product"
+                    type='button'
+                    class='btn btn-danger'
+                >Xoá bỏ</button>
+                <button
+                    type='button'
+                    class='btn btn-primary'
+                    data-bs-dismiss='modal'
+                >Huỷ</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <form method='POST' name="form-delete-product"></form>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+    let modalDeleteProduct = document.getElementById('modal-delete-product');
+    let btnDeleteProduct = document.getElementById('btn-delete-product');
+    let formDelete = document.forms['form-delete-product'];
+
+    let productId;
+
+    if (modalDeleteProduct) {
+    modalDeleteProduct.addEventListener('show.bs.modal', event => {
+        let button = event.relatedTarget
+        productId  =  button.getAttribute('data-id')
+        
+        
+    });
+    console.log(modalDeleteProduct)
+    
+
+    btnDeleteProduct.addEventListener('click', () => {
+      formDelete.action = '/products/' + productId + '?_method=DELETE';
+      formDelete.submit();
+    })
+
+}
+    })
+
+</script>

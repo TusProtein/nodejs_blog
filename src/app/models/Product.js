@@ -6,6 +6,7 @@ mongoose.plugin(slug);
 
 const Product = new Schema(
     {
+        _id: { type: String },
         name: { type: String, require: true, maxLength: 255 },
         description: { type: String },
         videoId: { type: String, require: true },

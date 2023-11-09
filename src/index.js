@@ -3,6 +3,8 @@ import morgan from 'morgan';
 import { engine as handlebars } from 'express-handlebars';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import methodOverride from 'method-override';
+
 import route from './routes/index.js';
 import db from './config/db/connect.js';
 
@@ -10,6 +12,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
+
+//Ghi đè Header PUT, DELETE
+app.use(methodOverride('_method'));
 
 //Các tệp tĩnh
 app.use(express.static(path.join(__dirname, 'public')));

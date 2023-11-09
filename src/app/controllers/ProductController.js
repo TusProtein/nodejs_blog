@@ -27,6 +27,7 @@ class ProductController {
             .catch((err) => {});
     }
 
+    //[GET] /products/:id/edit
     edit(req, res, next) {
         Product.findById({ _id: req.params.id })
             .lean()
@@ -34,11 +35,19 @@ class ProductController {
             .catch(next);
     }
 
+    //[PUT] /products/:id
     update(req, res, next) {
         Product.updateOne({ _id: req.params.id }, req.body)
-            // lean() ==> Mongoose Documents -> Object JavaScript
             .lean()
             .then(() => res.redirect('/me/stored-products'))
+            .catch(next);
+    }
+
+    //[DELETE] /products/:id
+    destroy(req, res, next) {
+        Product.deleteOne({ _id: req.params.id })
+            .lean()
+            .then(() => res.redirect('back'))
             .catch(next);
     }
 }
