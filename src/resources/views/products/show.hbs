@@ -3,6 +3,7 @@
     <h2 class="col-3">Danh mục sản phẩm</h2>
     <div class="col-9">
       <h2 class="name">{{productDetail.name}}</h2>
+      {{#ifVideoIdInvalid productDetail.videoId}}
       <iframe
         width="560"
         height="315"
@@ -12,8 +13,18 @@
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
         allowfullscreen
       ></iframe>
-      <div class="description">Description:
-        {{productDetail.description}}</div>
+      {{else}}
+      <iframe
+        width="560"
+        height="315"
+        src="https://www.youtube.com/embed/6d9Eu-e_c30?si=t0Xz9P6Yg4vZmIqk"
+        title="YouTube video player"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen
+      ></iframe>
+      {{/ifVideoIdInvalid}}
+      <div class="description">Description: {{productDetail.description}}</div>
       <div class="rating">Rating: {{productDetail.rating}}</div>
     </div>
   </div>

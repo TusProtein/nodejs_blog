@@ -8,11 +8,11 @@
     "endOfLine": "lf",
     "arrowParens": "avoid",
     "overrides": [
-        {
-            "files": "*.hbs",
-            "options": {
-                "parser": "html"
-            }
+      {
+        "files": "*.hbs",
+        "options": {
+          "parser": "html"
         }
+      }
     ]
-}
+  }

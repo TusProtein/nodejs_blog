@@ -10,7 +10,6 @@
         class="form-control"
         id="name"
       />
-
     </div>
 
     <div class="mb-3">
@@ -20,8 +19,9 @@
         name="description"
         class="form-control"
         id="description"
-      >{{productId.description}}</textarea>
-
+      >
+{{productId.description}}</textarea
+      >
     </div>
 
     <div class="mb-3">
@@ -33,7 +33,17 @@
         class="form-control"
         id="videoId"
       />
+    </div>
 
+    <div class="mb-3">
+      <label for="cdnId" class="form-label">CdnId</label>
+      <input
+        value="{{productId.cdnId}}"
+        type="text"
+        name="cdnId"
+        class="form-control"
+        id="cdnId"
+      />
     </div>
 
     <div class="mb-3">
@@ -45,7 +55,6 @@
         class="form-control"
         id="rating"
       />
-
     </div>
 
     <button type="submit" class="btn btn-primary">Lưu lại</button>

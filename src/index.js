@@ -1,4 +1,5 @@
 import express from 'express';
+import Handlebars from 'handlebars';
 import morgan from 'morgan';
 import { engine as handlebars } from 'express-handlebars';
 import path from 'path';
@@ -21,9 +22,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //Parse body request
 app.use(
-    express.urlencoded({
-        extended: true,
-    })
+  express.urlencoded({
+    extended: true,
+  }),
 );
 
 //Connect to mongodb
@@ -37,13 +38,21 @@ app.use(express.json());
 
 //Template engines
 app.engine(
-    'hbs',
-    handlebars({
-        extname: '.hbs',
-        helpers: {
-            sum: (a, b) => a + b,
-        },
-    })
+  'hbs',
+  handlebars({
+    extname: '.hbs',
+    helpers: {
+      sum: (a, b) => a + b,
+      ifVideoIdInvalid: function (videoId, options) {
+        if (videoId && videoId.length === 11) {
+          // options.fn(this) === true
+          return options.fn(this);
+        }
+        // options.inverse(this) === false
+        return options.inverse(this);
+      },
+    },
+  }),
 );
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, 'resources', 'views'));
