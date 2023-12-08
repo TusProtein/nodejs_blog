@@ -5,14 +5,27 @@ import { engine as handlebars } from 'express-handlebars';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import methodOverride from 'method-override';
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
 
 import route from './routes/index.js';
 import db from './config/db/connect.js';
+import sortMiddleWear from './app/middlewares/sortMiddleWear.js';
+import helpersHandlebars from './helpers/handlebars.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
+
+// Use cookie
+app.use(cookieParser());
+
+dotenv.config(); // Load biến môi trường từ file .env
+
+// Mongoose version 6.
+mongoose.set('strictQuery', false);
 
 //Ghi đè Header PUT, DELETE
 app.use(methodOverride('_method'));
@@ -33,6 +46,9 @@ db.connect();
 //Parse Frameworks JS(fetch, axios,...)
 app.use(express.json());
 
+// Custom MiddleWare
+app.use(sortMiddleWear);
+
 //HTTP Logger
 // app.use(morgan("combined"));
 
@@ -41,17 +57,7 @@ app.engine(
   'hbs',
   handlebars({
     extname: '.hbs',
-    helpers: {
-      sum: (a, b) => a + b,
-      ifVideoIdInvalid: function (videoId, options) {
-        if (videoId && videoId.length === 11) {
-          // options.fn(this) === true
-          return options.fn(this);
-        }
-        // options.inverse(this) === false
-        return options.inverse(this);
-      },
-    },
+    helpers: helpersHandlebars,
   }),
 );
 app.set('view engine', 'hbs');

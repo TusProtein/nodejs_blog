@@ -3,6 +3,8 @@ import productController from '../app/controllers/ProductController.js';
 
 const router = express.Router();
 
+router.post('/handle-form-delete', productController.handleForm);
+router.post('/handle-form-restore-deleteForce', productController.handleForm);
 router.post('/store', productController.store);
 router.put('/:id', productController.update);
 router.patch('/:id/restore', productController.restore);

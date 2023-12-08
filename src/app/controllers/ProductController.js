@@ -1,3 +1,4 @@
+import { response } from 'express';
 import Product from '../models/Product.js';
 class ProductController {
   //[GET] /news
@@ -23,7 +24,7 @@ class ProductController {
     formData.image =
       formData.videoId && formData.videoId.length === 11
         ? `http://img.youtube.com/vi/${formData.videoId}/sddefault.jpg`
-        : formData.cdnId && formData.cdnId.length === 1
+        : formData.cdnId
         ? `https://file.hstatic.net/1000301274/file/${formData.cdnId}_grande.jpg`
         : '/img/default-image.jpeg';
 
@@ -31,7 +32,7 @@ class ProductController {
     product
       .save()
       .then(() => res.redirect('/me/stored-products'))
-      .catch(err => {});
+      .catch(next);
   }
 
   //[GET] /products/:id/edit
@@ -49,7 +50,7 @@ class ProductController {
     formData.image =
       formData.videoId && formData.videoId.length === 11
         ? `http://img.youtube.com/vi/${formData.videoId}/sddefault.jpg`
-        : formData.cdnId && formData.cdnId.length === 1
+        : formData.cdnId
         ? `https://file.hstatic.net/1000301274/file/${formData.cdnId}_grande.jpg`
         : '/img/default-image.jpeg';
 
@@ -81,6 +82,33 @@ class ProductController {
       .lean()
       .then(() => res.redirect('back'))
       .catch(next);
+  }
+
+  //[DELETE] /products/handle-form-action
+  handleForm(req, res, next) {
+    switch (req.body.action) {
+      case 'delete':
+        Product.delete({ _id: req.body.productIds })
+          .lean()
+          .then(() => res.redirect('back'))
+          .catch(next);
+        break;
+      case 'restore':
+        Product.restore({ _id: req.body.productIds })
+          .lean()
+          .then(() => res.redirect('back'))
+          .catch(next);
+        break;
+      case 'deleteForce':
+        Product.deleteMany({ _id: req.body.productIds })
+          .lean()
+          .then(() => res.redirect('back'))
+          .catch(next);
+        break;
+
+      default:
+        res.json('Invalid action');
+    }
   }
 }
 

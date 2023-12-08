@@ -1,0 +1,54 @@
+<div class="mt-4">
+  <div class="input-group flex-nowrap">
+    <input
+      id="username"
+      onkeydown="handleEnter(event)"
+      type="text"
+      class="form-control"
+      placeholder="Username"
+      aria-label="Username"
+      aria-describedby="addon-wrapping"
+    />
+  </div>
+  <div class="input-group flex-nowrap mt-4">
+    <input
+      id="password"
+      onkeydown="handleEnter(event)"
+      type="text"
+      class="form-control"
+      placeholder="Password"
+      aria-label="Password"
+      aria-describedby="addon-wrapping"
+    />
+  </div>
+  <button onclick="login()" class="btn btn-primary mt-4">Login</button>
+</div>
+
+<script>
+  const handleEnter = event => {
+    if (event && event.key === 'Enter') {
+      login();
+    }
+  };
+
+  const login = () => {
+    let username = $('#username');
+    let password = $('#password');
+    $.ajax({
+      url: '/login',
+      type: 'POST',
+      data: {
+        username: username.val(),
+        password: password.val(),
+      },
+    })
+      .then(data => {
+        if (data.token) {
+          window.location.href = '/task';
+        } else {
+          alert('Sai tên đăng nhập hoặc mật khẩu');
+        }
+      })
+      .catch(err => console.log(err));
+  };
+</script>

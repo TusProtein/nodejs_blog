@@ -4,7 +4,7 @@ class MeController {
   //[GET] /me/stored-products
   storedProducts(req, res, next) {
     Promise.all([
-      Product.find({}).lean(),
+      Product.find({}).sortable(req).lean(),
       Product.countDocumentsWithDeleted({ deleted: true }).lean(),
     ])
       .then(([products, deletedCount]) =>

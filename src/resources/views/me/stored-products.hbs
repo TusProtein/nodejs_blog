@@ -1,36 +1,74 @@
-<div class="mt-4">
+<form class="mt-4" method="POST" action="/products/handle-form-delete">
   <div>
     <h3>Sản phẩm của tôi</h3>
     <a href="/me/trash-products" class="text-decoration-none">
-      <div style="display: flex; align-items: center; gap: 8px">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          height="1em"
-          viewBox="0 0 448 512"
-        >
-          <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
-          <path
-            d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"
-          />
-        </svg>
-        <span>Thùng rác ({{deletedCount}})</span>
-      </div>
+      <svg
+        style="margin-bottom: 2px"
+        xmlns="http://www.w3.org/2000/svg"
+        height="1em"
+        viewBox="0 0 448 512"
+      >
+        <path
+          d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"
+        />
+      </svg>
+      <span style="margin-left: 8px">Thùng rác ({{deletedCount}})</span>
     </a>
   </div>
+
+  <div class="mt-2 d-flex align-items-center">
+    <div class="form-check">
+      <input
+        class="form-check-input"
+        type="checkbox"
+        value=""
+        id="checkbox-all"
+      />
+      <label class="form-check-label" for="checkbox-all"> Chọn tất cả </label>
+    </div>
+    <select
+      class="form-select"
+      name="action"
+      aria-label="Default select example"
+    >
+      <option>-- Hành động --</option>
+      <option value="delete">Xóa</option>
+    </select>
+
+    <button id="btn-submit" class="btn btn-primary" disabled>Thực hiện</button>
+  </div>
+
   <table class="table">
     <thead>
       <tr>
-        <th scope="col">#</th>
-        <th scope="col">Tên sản phẩm</th>
-        <th scope="col">Mô tả</th>
-        <th scope="col">Thời gian tạo</th>
+        <th>
+          <a href="/me/stored-products">
+            <i class="fa-solid fa-arrows-rotate"></i>
+          </a>
+        </th>
+        <th scope="col">{{{sortable '_id' sort}}}</th>
+        <th scope="col">Tên sản phẩm {{{sortable 'name' sort}}}</th>
+        <th scope="col">Mô tả {{{sortable 'description' sort}}}</th>
+        <th scope="col">Thời gian tạo {{{sortable 'createdAt' sort}}}</th>
         <th></th>
       </tr>
     </thead>
     <tbody>
       {{#each products}}
       <tr class="align-middle">
-        <th scope="row">{{sum @index 1}}</th>
+        <th>
+          <div class="form-check">
+            <input
+              name="productIds[]"
+              class="form-check-input"
+              type="checkbox"
+              value="{{this._id}}"
+              id="flexCheckDefault"
+            />
+            <label class="form-check-label" for="flexCheckDefault"> </label>
+          </div>
+        </th>
+        <th scope="row">{{this._id}}</th>
         <td>{{this.name}}</td>
         <td>{{this.description}}</td>
         <td>{{this.createdAt}}</td>
@@ -64,7 +102,7 @@
       {{/each}}
     </tbody>
   </table>
-</div>
+</form>
 
 {{!-- Modal --}}
 <div id="delete-product-modal" class="modal" tabindex="-1">
@@ -97,6 +135,10 @@
 <script>
   let btnModalDelete = document.getElementById('delete-product-modal');
   let btnDeleteProduct = document.getElementById('btn-delete-product');
+  let checkBoxAll = $('#checkbox-all');
+  let checkBoxItem = $('input[name="productIds[]"]');
+  let btnSubmit = $('#btn-submit');
+  let selectOption = $('select[name="action"]');
 
   let productId;
 
@@ -112,4 +154,35 @@
       .then(() => location.reload())
       .catch(() => console.log('Error'));
   };
+
+  // Khi click vào checkboxAll sẽ thì các checkbox nhỏ sẽ checked
+  checkBoxAll.change(function (e) {
+    let isCheckedAll = $(this).prop('checked');
+    checkBoxItem.prop('checked', isCheckedAll);
+    reRenderBtn();
+  });
+
+  // Khi click vào 1 checkbox
+  checkBoxItem.change(function (e) {
+    let isCheckedAll =
+      checkBoxItem.length === $('input[name="productIds[]"]:checked').length;
+
+    checkBoxAll.prop('checked', isCheckedAll);
+    reRenderBtn();
+  });
+
+  // Hàm thêm hoăc xóa class disable của nút Thực hiện
+  function reRenderBtn() {
+    let checkedCount = $('input[name="productIds[]"]:checked').length;
+
+    checkedCount > 0
+      ? btnSubmit.attr('disabled', false)
+      : btnSubmit.attr('disabled', true);
+  }
+
+  btnSubmit.click(function (e) {
+    selectOption.val() === '-- Hành động --'
+      ? (alert('Vui lòng chọn hành động'), e.preventDefault())
+      : null;
+  });
 </script>
