@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container">
-    <a class="navbar-brand" href="/">Healthy Online</a>
+    <a class="navbar-brand" href="/home">Healthy Online</a>
     <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
       <ul class="navbar-nav">
         <li class="nav-item dropdown">
@@ -15,13 +15,28 @@
           </button>
           <ul class="dropdown-menu dropdown-menu-dark">
             <li class="nav-item">
-              <a class="nav-link" href="/products/create">Tạo sản phẩm</a>
-              <a class="nav-link" href="/me/stored-products">Sản phẩm của tôi</a>
+              <a id="btn-create" class="nav-link" href="/products/create"
+                >Tạo sản phẩm</a
+              >
+              <a class="nav-link" href="/me/stored-products"
+                >Sản phẩm của tôi</a
+              >
+              <a id="logout" class="nav-link" href="/logout">Đăng xuất</a>
             </li>
           </ul>
         </li>
       </ul>
     </div>
-
   </div>
 </nav>
+
+<script>
+  $('#logout').click(function () {
+    $.ajax({
+      url: '/logout',
+      type: 'GET',
+    })
+      .then(data => console.log(data))
+      .catch(err => console.log(err));
+  });
+</script>

@@ -1,41 +1,26 @@
-import jwt from 'jsonwebtoken';
-import User from '../models/User.js';
-
+import passport from '../../passport/passportLocal.js';
+import generateJWT from '../../utils/generateJWT.js';
 class LoginController {
   //[GET] /
   login(req, res, next) {
-    res.render('./auth/login');
+    res.render('./auth/login', { noLayout: true });
   }
   //[POST] /
   postLogin(req, res, next) {
-    let username = req.body.username;
-    let password = req.body.password;
+    passport.authenticate('local', (err, user) => {
+      if (err) return next(err);
+      if (!user) {
+        return res.json('that bai'); // Xác thực thất bại
+      }
 
-    User.findOne({
-      username,
-      password,
-    })
-      .then(data => {
-        if (data) {
-          let token = jwt.sign(
-            {
-              _id: data._id,
-            },
-            process.env.JWT_SECRET,
-          );
-          // set Cookie
-          res.cookie('token', token);
-          return res.json({
-            message: 'Bạn đã đăng nhập thành công',
-            token,
-          });
-        } else {
-          return res.json('that bai');
-        }
-      })
-      .catch(err => {
-        console.log(err);
+      const token = generateJWT(user);
+      // Set Cookie
+      res.cookie('token', token);
+      return res.json({
+        message: 'Bạn đã đăng nhập thành công',
+        token,
       });
+    })(req, res, next);
   }
 }
 

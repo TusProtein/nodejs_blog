@@ -26,11 +26,11 @@
   </head>
   <body>
     <div class="app">
-      {{> header}}
+      {{#unless noLayout}} {{> header}} {{/unless}}
 
       <div class="container">{{{body}}}</div>
 
-      {{> footer}}
+      {{#unless noLayout}} {{> footer}} {{/unless}}
     </div>
 
     <script

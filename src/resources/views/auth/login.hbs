@@ -21,10 +21,24 @@
       aria-describedby="addon-wrapping"
     />
   </div>
-  <button onclick="login()" class="btn btn-primary mt-4">Login</button>
+  <button
+    style="margin-right: 12px"
+    onclick="login()"
+    class="btn btn-dark mt-4"
+  >
+    Login
+  </button>
+  <button onclick="loginWithFb()" class="btn btn-primary mt-4">
+    Login with Facebook
+  </button>
 </div>
 
 <script>
+  const loginWithFb = () => {
+    window.location.href =
+      'https://1a5e-116-96-45-53.ngrok-free.app/auth/facebook';
+  };
+
   const handleEnter = event => {
     if (event && event.key === 'Enter') {
       login();
@@ -35,7 +49,7 @@
     let username = $('#username');
     let password = $('#password');
     $.ajax({
-      url: '/login',
+      url: '/',
       type: 'POST',
       data: {
         username: username.val(),
@@ -43,8 +57,9 @@
       },
     })
       .then(data => {
+        console.log(data);
         if (data.token) {
-          window.location.href = '/task';
+          window.location.href = '/home';
         } else {
           alert('Sai tên đăng nhập hoặc mật khẩu');
         }
