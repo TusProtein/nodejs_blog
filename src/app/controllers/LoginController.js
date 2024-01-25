@@ -7,6 +7,8 @@ class LoginController {
   }
   //[POST] /
   postLogin(req, res, next) {
+    const oneHour = 3600000;
+
     passport.authenticate('local', (err, user) => {
       if (err) return next(err);
       if (!user) {
@@ -15,7 +17,11 @@ class LoginController {
 
       const token = generateJWT(user);
       // Set Cookie
-      res.cookie('token', token);
+      res.cookie('token', token, {
+        maxAge: oneHour,
+        secure: true,
+        httpOnly: true,
+      });
       return res.json({
         message: 'Bạn đã đăng nhập thành công',
         token,

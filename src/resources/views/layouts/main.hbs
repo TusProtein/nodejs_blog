@@ -26,11 +26,11 @@
   </head>
   <body>
     <div class="app">
-      {{#unless noLayout}} {{> header}} {{/unless}}
-
+      {{!-- Custom Header --}} {{#unless noLayout}} {{> header}} {{/unless}}
+      {{!-- Custom class Container --}} {{#unless noContainerClass}}
       <div class="container">{{{body}}}</div>
-
-      {{#unless noLayout}} {{> footer}} {{/unless}}
+      {{else}} {{{body}}} {{/unless}} {{!-- Custom Footer --}} {{#unless
+      noLayout}} {{> footer}} {{/unless}}
     </div>
 
     <script

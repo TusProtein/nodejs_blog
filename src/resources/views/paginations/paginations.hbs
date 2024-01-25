@@ -1,6 +1,13 @@
-<div class="mt-4 mb-4">
-  <div id="container" class="row"></div>
-  <div class="mt-4">
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="container"></div>
     <nav aria-label="Page navigation example">
       <ul style="gap: 16px" class="pagination">
         <li id="previous" class="page-item">
@@ -12,8 +19,8 @@
         </li>
       </ul>
     </nav>
-  </div>
-</div>
+  </body>
+</html>
 
 <script>
   let currentPage;
@@ -33,7 +40,7 @@
 
   $(document).ready(function () {
     $.ajax({
-      url: `/homePaginations`,
+      url: `/api/users`,
       type: 'GET',
     })
       .then(dataObj => {
@@ -61,7 +68,7 @@
     let data;
     let total;
     $.ajax({
-      url: `/homePaginations?page=${page}`,
+      url: `/api/users?page=${page}`,
       type: 'GET',
     })
       .then(dataObj => {
@@ -79,22 +86,7 @@
 
         let output = '';
         data.forEach(item => {
-          output += `
-           <div class="col-sm-6 col-lg-3">
-      <div class="card mt-4">
-        <a href="./products/${item.slug}">
-          <img src="${item.image}" class="card-img-top" alt="${item.name}" />
-        </a>
-        <div class="card-body">
-          <a class="card-title-a" href="./products/${item.slug}">
-            <h5 class="card-title line-clamp-2">${item.name}</h5>
-          </a>
-          <p class="card-text line-clamp-2">${item.description}</p>
-          <a href="#" class="btn btn-primary">Buy Product</a>
-        </div>
-      </div>
-    </div>
-          `;
+          output += `<h1>${item.username}: ${item.password}</h1>`;
         });
         $('#container').html(output);
       })

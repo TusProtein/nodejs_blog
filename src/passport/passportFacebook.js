@@ -12,8 +12,7 @@ passport.use(
     {
       clientID: '1032980924647666',
       clientSecret: '043f089630e4efc7b5dca343844cc9e8',
-      callbackURL:
-        'https://1a5e-116-96-45-53.ngrok-free.app/auth/facebook/callback',
+      callbackURL: 'http://localhost:3000/auth/facebook/callback',
       profileFields: ['id', 'displayName', 'photos', 'email'],
     },
     (accessToken, refreshToken, profile, done) => {
@@ -24,6 +23,7 @@ passport.use(
         },
         (err, user) => {
           if (err) {
+            console.log(err);
             return done(err);
           }
 

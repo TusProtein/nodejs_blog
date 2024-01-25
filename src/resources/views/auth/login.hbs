@@ -1,3 +1,4 @@
+{{!--
 <div class="mt-4">
   <div class="input-group flex-nowrap">
     <input
@@ -32,11 +33,79 @@
     Login with Facebook
   </button>
 </div>
+--}}
+
+<div class="mt-4">
+  <!doctype html>
+  <html lang="en">
+    <head>
+      <!-- Design by foolishdeveloper.com -->
+      {{!--
+      <title>Glassmorphism login Form Tutorial in html css</title>
+      --}}
+
+      <link rel="preconnect" href="https://fonts.gstatic.com" />
+      <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+      />
+      <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap"
+        rel="stylesheet"
+      />
+      <!--Stylesheet-->
+      <link rel="stylesheet" href="/css/login.css" />
+    </head>
+    <body>
+      <div class="background">
+        <div class="shape"></div>
+        <div class="shape"></div>
+      </div>
+      <form>
+        <h3>Login Here</h3>
+
+        <label for="username">Username</label>
+        <input
+          onkeydown="handleEnter(event)"
+          type="text"
+          placeholder="Username"
+          id="username"
+        />
+
+        <label for="password">Password</label>
+        <input
+          onkeydown="handleEnter(event)"
+          type="password"
+          placeholder="Password"
+          id="password"
+        />
+
+        <button onclick="login()">Log In</button>
+        <div class="social">
+          {{!--
+          <div class="go"><i class="fab fa-google"></i> Google</div>
+          --}}
+          <div onclick="loginWithFb()" style="width: 100%" class="fb">
+            <i class="fab fa-facebook"></i>
+            <a
+              style="text-decoration: none"
+              href="http://localhost:3000/auth/facebook"
+              >Facebook</a
+            >
+          </div>
+        </div>
+        <div class="mt-4 d-flex justify-content-center gap-2">
+          Not register?
+          <a href="/register">Create an account</a>
+        </div>
+      </form>
+    </body>
+  </html>
+</div>
 
 <script>
   const loginWithFb = () => {
-    window.location.href =
-      'https://1a5e-116-96-45-53.ngrok-free.app/auth/facebook';
+    window.location.href = 'http://localhost:3000/auth/facebook';
   };
 
   const handleEnter = event => {
@@ -57,7 +126,7 @@
       },
     })
       .then(data => {
-        console.log(data);
+        //   console.log(data);
         if (data.token) {
           window.location.href = '/home';
         } else {

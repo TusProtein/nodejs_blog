@@ -8,6 +8,7 @@ import methodOverride from 'method-override';
 import mongoose from 'mongoose';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import cors from 'cors';
 
 import passport from 'passport';
 import { checkLogin } from './app/middlewares/authorizationMiddleWear.js';
@@ -22,6 +23,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
+
+app.use(cors());
 
 // Use cookie
 app.use(cookieParser());

@@ -58,15 +58,15 @@ const checkToken = (req, res, next) => {
   }
 };
 
-function createdTokenFb(req, res, next) {
-  try {
-    const token = req.user.token;
-    res.cookie('token', token, { secure: true, httpOnly: true });
-    next();
-  } catch (error) {
-    res.json('Invalid Token');
-  }
-}
+// function createdTokenFb(req, res, next) {
+//   try {
+//     const token = req.user.token;
+//     res.cookie('token', token, { secure: true, httpOnly: true });
+//     next();
+//   } catch (error) {
+//     res.json('Invalid Token');
+//   }
+// }
 
 const checkAllMiddleware = (req, res, next) => {
   if (req.data.role >= 0) {
@@ -94,7 +94,7 @@ const checkTeacherMiddleware = (req, res, next) => {
 
 export {
   checkLogin,
-  createdTokenFb,
+  // createdTokenFb,
   checkToken,
   checkAllMiddleware,
   checkStudentMiddleware,
